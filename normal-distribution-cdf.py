@@ -41,11 +41,11 @@ rng = np.random.default_rng()
 rng.shuffle(x_coloc)
 y_coloc = f_tbi(x_coloc)
 
-# initial condition for right tail stability
+# initial condition for loss1
 x_init = np.array([10.0])
 h_init = np.array([1.0])
 
-# integral(f(x)) initial condition
+# initial condition for loss3
 x_init2 = np.array([-10.0])
 h_init2 = np.array([0.0])
 
