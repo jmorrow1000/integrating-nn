@@ -35,7 +35,7 @@ def f_tbi(x_coloc):
            * np.exp(-0.5 * ((x_coloc - mu ) / sigma)**2)
 
 
-# create co-location points for function to be integrated
+# create colocation points for function to be integrated
 x_coloc = np.arange(-10, 10, 0.2)  # define domain
 rng = np.random.default_rng()
 rng.shuffle(x_coloc)
