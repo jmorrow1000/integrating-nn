@@ -27,7 +27,7 @@ x = layers.Dense(512, activation='gelu', name='H2', kernel_initializer=weight_in
 output = layers.Dense(1, activation='linear', name='Out', kernel_initializer=weight_init)(x)
 model = tf.keras.Model(inputs, output)
 
-# function to be integrated
+# function to be integrated (normal distribution PDF)
 mu = 0.0
 sigma = 1.0
 def f_tbi(x_coloc):
