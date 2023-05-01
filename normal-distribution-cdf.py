@@ -1,4 +1,3 @@
-
 import tensorflow as tf
 from tensorflow.python.ops import math_ops
 import keras.backend as K
@@ -10,6 +9,7 @@ from tensorflow.keras.initializers import RandomNormal
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import layers
 import matplotlib.pyplot as plt
+from scipy.stats import norm
 import math
 
 # Hyperparameters
@@ -95,29 +95,28 @@ for epoch in range(epochs):
 dir_path = '[insert path here]'
 model.save(dir_path + 'normal-cdf-model.h5')
 
-# compare PINN results vs analytical results
+# plot CDF results
 x_test = np.zeros(200)
 y_test = np.zeros(200)
-y_calc = np.zeros(200)
+y_calc_p = np.zeros(200)
+y_calc_c = np.zeros(200)
 
 for i in range(200):
     x_test[i] = (i - 100) / 10
-    y_test[i] = model.predict([x_test[i]]) - model.predict([x_test[0]])  # definite
-    y_calc[i] = f_tbi(x_test[i])
+    # y_test[i] = model.predict([x_test[i]]) - model.predict([x_test[0]])  # definite
+    y_test[i] = model.predict([x_test[i]])  # definite
+    y_calc_p[i] = f_tbi(x_test[i])  # PDF
+    y_calc_c[i] = norm.cdf(x_test[i])
 
-# plt.plot(x_test, y_test, 'r', x_test, y_calc, 'b', x_coloc, y_coloc, 'sg')
-plt.plot(x_test, y_test, 'r', x_test, y_calc, 'b')  # w/o coloc pts
+plt.plot(x_test, y_test, 'r', x_test, y_calc_p, 'b', x_test[::5], y_calc_c[::5], '.g' )
 plt.ylim([-0.1, 1.1])
 plt.xlim([-10, 10])
-# plt.xlim([-10.0, 10.0])
-# plt.hlines(1.0, -3.0, 7.0, color = 'm', linestyle = 'dotted')
-# plt.text(-3.75, 1.0 , '1.0', va='center')
-# plt.title('red: CDF   blue: PDF   green: co-location pts')
-plt.title('red: CDF       blue: PDF')  # w/o coloc pts
+plt.title('red: CDF (neural net)     green: CDF (SciPy)     blue: PDF')
 plt.xlabel('x')
 plt.ylabel('CDF: probability    PDF: density')
 plt.show()
 
+# plot training loss
 plt.plot(loss)
 plt.yscale('log')
 plt.xlabel('epoch')
