@@ -66,7 +66,7 @@ def step(x_co, y_co, x_init, h_init, x_init2, h_init2):
 
         # model_loss2: collocation points
         pred_h = model(x_co)
-        dfdx = tape.gradient(pred_h, x_co)  # f(x)'
+        dfdx = tape.gradient(pred_h, x_co)
         residual = dfdx - y_co
         model_loss2 = K.mean(math_ops.square(residual), axis=-1)
         model_loss2 = tf.cast(model_loss2, tf.float32)
